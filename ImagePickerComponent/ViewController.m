@@ -9,9 +9,11 @@
 #import "ViewController.h"
 #import "HLImageManager.h"
 #import "HLImagePickerController.h"
+#import "HLGridView.h"
+#import "HLPhotoPreviewController.h"
 
 @interface ViewController ()<HLImagePickerControllerDelegate>
-
+@property (nonatomic, retain) HLGridView * gridView;
 @end
 
 @implementation ViewController
@@ -30,6 +32,25 @@
     [self.view addSubview:button];
     
     button.center = self.view.center;
+    button.y = 80;
+    
+    _gridView = [[HLGridView alloc] initWithFrame:CGRectMake(10, button.y + 50, SCREEN_WIDTH - 20, 100) columnNumber:3];
+    
+    _gridView.backgroundColor = [UIColor lightGrayColor];
+    
+    __block typeof(self) weakSelf = self;
+    _gridView.singleTapGestureBlock = ^(NSInteger index, NSMutableArray* assets, NSArray<UIImage *> *photos) {
+        HLImagePickerController* imagePickerController = [[HLImagePickerController alloc] initWithSelectedAssets:assets selectedPhotos:[NSMutableArray arrayWithArray:photos] index:index okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto){
+            weakSelf.gridView.assets = [NSMutableArray arrayWithArray:assets];
+            weakSelf.gridView.photos = [NSMutableArray arrayWithArray:photos];
+            
+        }];
+        
+        [weakSelf presentViewController:imagePickerController animated:YES completion:nil];
+    };
+    [self.view addSubview:_gridView];
+    
+    
 }
 
 - (void)click {
@@ -82,7 +103,8 @@
     // You can get the photos by block, the same as by delegate.
     // 你可以通过block或者代理，来得到用户选择的照片.
     [imagePickerVc setDidFinishPickingPhotosHandle:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
-        
+        _gridView.assets = [NSMutableArray arrayWithArray:assets];
+        _gridView.photos = [NSMutableArray arrayWithArray:photos];
     }];
     
     [self presentViewController:imagePickerVc animated:YES completion:nil];

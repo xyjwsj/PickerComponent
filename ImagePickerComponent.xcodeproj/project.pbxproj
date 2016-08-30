@@ -41,6 +41,7 @@
 		6BE3A17E1D75205A009E12C5 /* preview_original_def@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3A1621D75205A009E12C5 /* preview_original_def@2x.png */; };
 		6BE3A17F1D75205A009E12C5 /* TableViewArrow@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3A1631D75205A009E12C5 /* TableViewArrow@2x.png */; };
 		6BE3A1801D75205A009E12C5 /* VideoSendIcon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 6BE3A1641D75205A009E12C5 /* VideoSendIcon@2x.png */; };
+		6BE3A1831D752107009E12C5 /* HLGridView.m in Sources */ = {isa = PBXBuildFile; fileRef = 6BE3A1821D752107009E12C5 /* HLGridView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +98,8 @@
 		6BE3A1621D75205A009E12C5 /* preview_original_def@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "preview_original_def@2x.png"; sourceTree = "<group>"; };
 		6BE3A1631D75205A009E12C5 /* TableViewArrow@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "TableViewArrow@2x.png"; sourceTree = "<group>"; };
 		6BE3A1641D75205A009E12C5 /* VideoSendIcon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "VideoSendIcon@2x.png"; sourceTree = "<group>"; };
+		6BE3A1811D752107009E12C5 /* HLGridView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HLGridView.h; sourceTree = "<group>"; };
+		6BE3A1821D752107009E12C5 /* HLGridView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HLGridView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +213,8 @@
 				6BE3A14A1D75205A009E12C5 /* HLAssetCell.m */,
 				6BE3A14B1D75205A009E12C5 /* HLPhotoPreviewCell.h */,
 				6BE3A14C1D75205A009E12C5 /* HLPhotoPreviewCell.m */,
+				6BE3A1811D752107009E12C5 /* HLGridView.h */,
+				6BE3A1821D752107009E12C5 /* HLGridView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -344,6 +349,7 @@
 			files = (
 				6BD066BE1D717BB900215F8D /* ViewController.m in Sources */,
 				6BE3A1691D75205A009E12C5 /* HLPhotoPreviewController.m in Sources */,
+				6BE3A1831D752107009E12C5 /* HLGridView.m in Sources */,
 				6BE3A16C1D75205A009E12C5 /* HLAlbumCell.m in Sources */,
 				6BE3A1701D75205A009E12C5 /* UIView+HLFrame.m in Sources */,
 				6BE3A16E1D75205A009E12C5 /* HLAssetCell.m in Sources */,

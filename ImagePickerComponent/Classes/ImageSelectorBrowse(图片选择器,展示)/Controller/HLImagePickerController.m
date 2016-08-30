@@ -10,6 +10,7 @@
 #import "HLImageManager.h"
 #import "HLAlbumPickerController.h"
 #import "HLPhotoPickerController.h"
+#import "HLPhotoPreviewController.h"
 
 @interface HLImagePickerController () {
     NSTimer *_timer;
@@ -132,6 +133,47 @@
         } else {
             [self pushToPhotoPickerVc];
         }
+    }
+    return self;
+}
+
+/// This init method just for previewing photos / 用这个初始化方法以预览图片
+- (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index{
+    
+    __weak typeof(self) weakSelf = self;
+    return [self initWithSelectedAssets:selectedAssets selectedPhotos:selectedPhotos index:index okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+        if (weakSelf.didFinishPickingPhotosHandle) {
+            weakSelf.didFinishPickingPhotosHandle(photos,assets,isSelectOriginalPhoto);
+        }
+    }];
+}
+
+- (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index okCallback:(void (^)(NSArray<UIImage *> *, NSArray *, BOOL))callback {
+    HLPhotoPreviewController *previewVc = [[HLPhotoPreviewController alloc] init];
+    self = [super initWithRootViewController:previewVc];
+    if (self) {
+        self.selectedAssets = [NSMutableArray arrayWithArray:selectedAssets];
+        self.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
+        self.timeout = 15;
+        self.photoWidth = 828.0;
+        self.maxImagesCount = selectedAssets.count;
+        self.photoPreviewMaxWidth = 600;
+        self.barItemTextFont = [UIFont systemFontOfSize:15];
+        self.barItemTextColor = [UIColor whiteColor];
+        [self configDefaultImageName];
+        
+        previewVc.photos = [NSMutableArray arrayWithArray:selectedPhotos];
+        previewVc.currentIndex = index;
+        previewVc.browseMode = NO;
+        
+        __weak typeof(self) weakSelf = self;
+        
+        [previewVc setOkButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+            if (callback) {
+                callback(photos,assets,isSelectOriginalPhoto);
+            }
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        }];
     }
     return self;
 }

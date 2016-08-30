@@ -337,7 +337,7 @@
 #pragma private method
 
 - (void)pushPhotoPrevireViewController:(HLPhotoPreviewController *)photoPreviewVc {
-    __weak typeof(self) weakSelf = self;
+    __block typeof(self) weakSelf = self;
     photoPreviewVc.isSelectOriginalPhoto = _isSelectOriginalPhoto;
     photoPreviewVc.backButtonClickBlock = ^(BOOL isSelectOriginalPhoto) {
         weakSelf.isSelectOriginalPhoto = isSelectOriginalPhoto;
@@ -449,7 +449,7 @@
     } else {
         HLPhotoPreviewController *photoPreviewVc = [[HLPhotoPreviewController alloc] init];
         photoPreviewVc.currentIndex = index;
-        photoPreviewVc.browseMode = YES;
+        photoPreviewVc.browseMode = NO;
         photoPreviewVc.models = _models;
         [self pushPhotoPrevireViewController:photoPreviewVc];
     }

@@ -114,7 +114,6 @@
     _selectButton.hidden = tzImagePickerVc.maxImagesCount == 1;
     
     [_naviBar addSubview:_selectButton];
-    
     [_naviBar addSubview:_backButton];
     [self.view addSubview:_naviBar];
 }
@@ -310,6 +309,20 @@
     [[HLImageManager manager] photosBytesWithArray:@[_models[_currentIndex]] completion:^(NSString *totalBytes) {
         _originalPhotoLable.text = [NSString stringWithFormat:@"(%@)",totalBytes];
     }];
+}
+
+#pragma mark - UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat offSetWidth = scrollView.contentOffset.x;
+    offSetWidth = offSetWidth +  ((self.view.width + 20) * 0.5);
+    
+    NSInteger currentIndex = offSetWidth / (self.view.width + 20);
+    
+    if (_currentIndex != currentIndex) {
+        _currentIndex = currentIndex;
+        [self refreshNaviBarAndBottomBarState];
+    }
 }
 
 #pragma mark - UICollectionViewDataSource && Delegate
