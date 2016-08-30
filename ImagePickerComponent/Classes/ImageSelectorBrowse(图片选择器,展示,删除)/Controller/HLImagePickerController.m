@@ -141,14 +141,14 @@
 - (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index{
     
     __weak typeof(self) weakSelf = self;
-    return [self initWithSelectedAssets:selectedAssets selectedPhotos:selectedPhotos index:index okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+    return [self initWithSelectedAssets:selectedAssets selectedPhotos:selectedPhotos index:index mode:HLPreViewTypeBrowse okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
         if (weakSelf.didFinishPickingPhotosHandle) {
             weakSelf.didFinishPickingPhotosHandle(photos,assets,isSelectOriginalPhoto);
         }
     }];
 }
 
-- (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index okCallback:(void (^)(NSArray<UIImage *> *, NSArray *, BOOL))callback {
+- (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index mode:(HLPreViewType)mode okCallback:(void (^)(NSArray<UIImage *> *, NSArray *, BOOL))callback {
     HLPhotoPreviewController *previewVc = [[HLPhotoPreviewController alloc] init];
     self = [super initWithRootViewController:previewVc];
     if (self) {
@@ -164,8 +164,7 @@
         
         previewVc.photos = [NSMutableArray arrayWithArray:selectedPhotos];
         previewVc.currentIndex = index;
-        previewVc.browseMode = NO;
-        
+        previewVc.preViewMode = mode;
         __weak typeof(self) weakSelf = self;
         
         [previewVc setOkButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {

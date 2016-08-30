@@ -45,7 +45,7 @@
         self.isSelectOriginalPhoto = _tzImagePickerVc.isSelectOriginalPhoto;
     }
     [self configCollectionView];
-    if (!_browseMode) {
+    if (_preViewMode != HLPreViewTypeBrowse) {
         [self configCustomNaviBar];
         [self configBottomToolBar];
     }
@@ -162,6 +162,9 @@
 }
 
 - (void)back {
+    if (_preViewMode != HLPreViewTypeSelect) {
+        [self okButtonClick];
+    }
     if (self.navigationController.childViewControllers.count < 2) {
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
         return;
@@ -341,7 +344,7 @@
         __weak typeof(_toolBar) weakToolBar = _toolBar;
         cell.singleTapGestureBlock = ^(){
             // show or hide naviBar / 显示或隐藏导航栏
-            if (_browseMode) {
+            if (_preViewMode == HLPreViewTypeBrowse) {
                 [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                 return;
             }

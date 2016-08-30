@@ -35,6 +35,12 @@ typedef enum : NSUInteger {
     HLAssetCellTypeAudio,
 } HLAssetCellType;
 
+typedef enum : NSUInteger {
+    HLPreViewTypeSelect = 0,
+    HLPreViewTypeBrowse,
+    HLPreViewTypeEdite,
+} HLPreViewType;
+
 @interface HLSharedData : NSObject
 
 @end
