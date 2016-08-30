@@ -449,6 +449,7 @@
     } else {
         HLPhotoPreviewController *photoPreviewVc = [[HLPhotoPreviewController alloc] init];
         photoPreviewVc.currentIndex = index;
+        photoPreviewVc.browseMode = YES;
         photoPreviewVc.models = _models;
         [self pushPhotoPrevireViewController:photoPreviewVc];
     }

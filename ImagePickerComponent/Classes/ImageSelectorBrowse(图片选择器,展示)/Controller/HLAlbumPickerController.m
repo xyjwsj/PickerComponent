@@ -69,6 +69,21 @@
 }
 */
 
+#pragma mark - Click Event
+
+- (void)cancel {
+    HLImagePickerController *imagePickerVc = (HLImagePickerController *)self.navigationController;
+    if (imagePickerVc.autoDismiss) {
+        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+    }
+    if ([imagePickerVc.pickerDelegate respondsToSelector:@selector(imagePickerControllerDidCancel:)]) {
+        [imagePickerVc.pickerDelegate imagePickerControllerDidCancel:imagePickerVc];
+    }
+    if (imagePickerVc.imagePickerControllerDidCancelHandle) {
+        imagePickerVc.imagePickerControllerDidCancelHandle();
+    }
+}
+
 #pragma mark - UITableViewDataSource && Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {

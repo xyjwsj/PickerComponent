@@ -27,6 +27,8 @@
     UILabel *_numberLable;
     UIButton *_originalPhotoButton;
     UILabel *_originalPhotoLable;
+    
+    UILabel *_indexLabel;
 }
 @end
 
@@ -43,8 +45,10 @@
         self.isSelectOriginalPhoto = _tzImagePickerVc.isSelectOriginalPhoto;
     }
     [self configCollectionView];
-    [self configCustomNaviBar];
-    [self configBottomToolBar];
+    if (!_browseMode) {
+        [self configCustomNaviBar];
+        [self configBottomToolBar];
+    }
     self.view.clipsToBounds = YES;
 }
 
@@ -89,6 +93,15 @@
     _naviBar.backgroundColor = [UIColor colorWithRed:(34/255.0) green:(34/255.0)  blue:(34/255.0) alpha:1.0];
     _naviBar.alpha = 0.7;
     
+    _indexLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, _naviBar.height, _naviBar.height)];
+    _indexLabel.center = _naviBar.center;
+    _indexLabel.font = [UIFont systemFontOfSize:15];
+    _indexLabel.textColor = [UIColor whiteColor];
+    _indexLabel.textAlignment = NSTextAlignmentCenter;
+    _indexLabel.text = [NSString stringWithFormat:@"1/%lu", (unsigned long)self.models.count];
+    _indexLabel.backgroundColor = [UIColor clearColor];
+    [_naviBar addSubview:_indexLabel];
+    
     _backButton = [[UIButton alloc] initWithFrame:CGRectMake(10, 10, 44, 44)];
     [_backButton setImage:[UIImage imageNamed:@"navi_back.png"] forState:UIControlStateNormal];
     [_backButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -101,6 +114,7 @@
     _selectButton.hidden = tzImagePickerVc.maxImagesCount == 1;
     
     [_naviBar addSubview:_selectButton];
+    
     [_naviBar addSubview:_backButton];
     [self.view addSubview:_naviBar];
 }
@@ -217,6 +231,7 @@
     [_toolBar addSubview:_originalPhotoButton];
     [_toolBar addSubview:_numberImageView];
     [_toolBar addSubview:_numberLable];
+    
     [self.view addSubview:_toolBar];
 }
 
@@ -261,6 +276,10 @@
     _collectionView.contentSize = CGSizeMake(self.models.count * (self.view.width + 20), 0);
     [self.view addSubview:_collectionView];
     [_collectionView registerClass:[HLPhotoPreviewCell class] forCellWithReuseIdentifier:@"HLPhotoPreviewCell"];
+}
+
+- (void)reflushNaviBarIndex:(NSIndexPath*)indexPath {
+    _indexLabel.text = [NSString stringWithFormat:@"%ld/%lu", (long)indexPath.row + 1, (unsigned long)self.models.count];
 }
 
 - (void)refreshNaviBarAndBottomBarState {
@@ -309,9 +328,22 @@
         __weak typeof(_toolBar) weakToolBar = _toolBar;
         cell.singleTapGestureBlock = ^(){
             // show or hide naviBar / 显示或隐藏导航栏
-            _weakIsHideNaviBar = !_weakIsHideNaviBar;
-            weakNaviBar.hidden = _weakIsHideNaviBar;
-            weakToolBar.hidden = _weakIsHideNaviBar;
+            if (_browseMode) {
+                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+                return;
+            }
+            [UIView animateWithDuration:0.2 animations:^{
+                _weakIsHideNaviBar = !_weakIsHideNaviBar;
+//                weakNaviBar.hidden = _weakIsHideNaviBar;
+//                weakToolBar.hidden = _weakIsHideNaviBar;
+                if (_weakIsHideNaviBar) {
+                    weakNaviBar.y = -weakNaviBar.height - 5;
+                    weakToolBar.y = SCREEN_HEIGHT + weakToolBar.height + 5;
+                } else {
+                    weakNaviBar.y = 0;
+                    weakToolBar.y = SCREEN_HEIGHT - weakToolBar.height;
+                }
+            }];
         };
     }
     return cell;
@@ -320,6 +352,7 @@
 - (void)collectionView:(UICollectionView *)collectionView willDisplayCell:(UICollectionViewCell *)cell forItemAtIndexPath:(NSIndexPath *)indexPath {
     if ([cell isKindOfClass:[HLPhotoPreviewCell class]]) {
         [(HLPhotoPreviewCell *)cell recoverSubviews];
+        [self reflushNaviBarIndex:indexPath];
     }
 }
 

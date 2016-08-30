@@ -72,7 +72,7 @@
     
     //遍历相册
     for (PHAssetCollection* collection in assetCollections) {
-        NSLog(@"title=%@", collection.localizedTitle);
+        
         if ([self checkAvisibleAlbum:collection.localizedTitle]) {
             PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
             
@@ -96,7 +96,6 @@
     //遍历相册
     for (PHAssetCollection* collection in systemAssetCollections) {
 
-        NSLog(@"title=%@", collection.localizedTitle);
         PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
         if (fetchResult.count == 0) {
             continue;
@@ -126,7 +125,6 @@
         if (fetchResult.count == 0) {
             continue;
         }
-        NSLog(@"title=%@", collection.localizedTitle);
         model = [self albumModelResult:fetchResult name:collection.localizedTitle];
         [modelArray addObject:model];
     }
