@@ -16,5 +16,6 @@
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "HLSharedData.h"
 #import "UIView+HLFrame.h"
+#import "UIImage+HLServiceBundle.h"
 
 #endif /* PrefixHeader_pch */

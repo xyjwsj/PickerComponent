@@ -203,8 +203,8 @@
         [_originalPhotoButton setTitle:fullImageText forState:UIControlStateSelected];
         [_originalPhotoButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
         [_originalPhotoButton setTitleColor:[UIColor blackColor] forState:UIControlStateSelected];
-        [_originalPhotoButton setImage:[UIImage imageNamed:tzImagePickerVc.photoOriginDefImageName] forState:UIControlStateNormal];
-        [_originalPhotoButton setImage:[UIImage imageNamed:tzImagePickerVc.photoOriginSelImageName] forState:UIControlStateSelected];
+        [_originalPhotoButton setImage:[UIImage imageNamedFromServiceBundle:tzImagePickerVc.photoOriginDefImageName] forState:UIControlStateNormal];
+        [_originalPhotoButton setImage:[UIImage imageNamedFromServiceBundle:tzImagePickerVc.photoOriginSelImageName] forState:UIControlStateSelected];
         _originalPhotoButton.selected = _isSelectOriginalPhoto;
         _originalPhotoButton.enabled = tzImagePickerVc.selectedModels.count > 0;
         
@@ -226,7 +226,7 @@
     [_okButton setTitleColor:tzImagePickerVc.oKButtonTitleColorDisabled forState:UIControlStateDisabled];
     _okButton.enabled = tzImagePickerVc.selectedModels.count;
     
-    _numberImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:tzImagePickerVc.photoNumberIconImageName]];
+    _numberImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamedFromServiceBundle:tzImagePickerVc.photoNumberIconImageName]];
     _numberImageView.frame = CGRectMake(self.view.width - 56 - 28, 10, 30, 30);
     _numberImageView.hidden = tzImagePickerVc.selectedModels.count <= 0;
     _numberImageView.backgroundColor = [UIColor clearColor];

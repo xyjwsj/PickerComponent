@@ -50,7 +50,7 @@
     }
     self.imageRequestID = imageRequestID;
     self.selectPhotoButton.selected = model.isSelected;
-    self.selectImageView.image = self.selectPhotoButton.isSelected ? [UIImage imageNamed:self.photoSelImageName] : [UIImage imageNamed:self.photoDefImageName];
+    self.selectImageView.image = self.selectPhotoButton.isSelected ? [UIImage imageNamedFromServiceBundle:self.photoSelImageName] : [UIImage imageNamedFromServiceBundle:self.photoDefImageName];
 }
 
 - (void)setMaxImagesCount:(NSInteger)maxImagesCount {
@@ -80,7 +80,7 @@
     if (self.didSelectPhotoBlock) {
         self.didSelectPhotoBlock(sender.isSelected);
     }
-    self.selectImageView.image = sender.isSelected ? [UIImage imageNamed:self.photoSelImageName] : [UIImage imageNamed:self.photoDefImageName];
+    self.selectImageView.image = sender.isSelected ? [UIImage imageNamedFromServiceBundle:self.photoSelImageName] : [UIImage imageNamedFromServiceBundle:self.photoDefImageName];
     if (sender.isSelected) {
         [UIView showOscillatoryAnimationWithLayer:_selectImageView.layer type:HLOscillatoryAnimationToBigger];
     }
@@ -140,7 +140,7 @@
     if (_viewImgView == nil) {
         UIImageView *viewImgView = [[UIImageView alloc] init];
         viewImgView.frame = CGRectMake(8, 0, 17, 17);
-        [viewImgView setImage:[UIImage imageNamed:@"VideoSendIcon.png"]];
+        [viewImgView setImage:[UIImage imageNamedFromServiceBundle:@"VideoSendIcon.png"]];
         [self.bottomView addSubview:viewImgView];
         _viewImgView = viewImgView;
     }

@@ -91,7 +91,7 @@
         UIImageView *arrowImageView = [[UIImageView alloc] init];
         CGFloat arrowWH = 15;
         arrowImageView.frame = CGRectMake(self.width - arrowWH - 12, 28, arrowWH, arrowWH);
-        [arrowImageView setImage:[UIImage imageNamed:@"TableViewArrow.png"]];
+        [arrowImageView setImage:[UIImage imageNamedFromServiceBundle:@"TableViewArrow.png"]];
         [self.contentView addSubview:arrowImageView];
         _arrowImageView = arrowImageView;
     }

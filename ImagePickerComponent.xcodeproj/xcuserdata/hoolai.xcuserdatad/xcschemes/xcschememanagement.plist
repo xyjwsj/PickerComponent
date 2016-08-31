@@ -9,9 +9,19 @@
 			<key>orderHint</key>
 			<integer>0</integer>
 		</dict>
+		<key>UISDK.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>1</integer>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
+		<key>6BACDEF91D76759600274906</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
 		<key>6BD066B21D717BB800215F8D</key>
 		<dict>
 			<key>primary</key>
