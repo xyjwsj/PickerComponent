@@ -10,8 +10,16 @@
 
 Extension of UIImagePickerController, support picking multiple photos、original photo, also allow preview photo.
 Auto Create GridView of photo, also allow preview photo and edite photo(Delete and Select)
+You can execute script to create framework of static
 
 ##Usage
+
+- Create Framework
+ > Enter the project directory.
+ > Find the directory of script.
+ > Edite the build.sh, modify the path of project directory, the path of target directory.
+ > Execute the command "sh build.sh UISDK".
+ > You can find the framework in the directory of target.
 
 - Create GridView
 ```Objective-c
