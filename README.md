@@ -1,4 +1,4 @@
-# PickerComponent
+# PickerComponent 1.0
 [![Platform](http://img.shields.io/badge/platform-ios-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action) 
 [![Build Status](https://www.bitrise.io/app/525c553aef64bd02.svg?token=BasjApmM7Nb3N5gSzhjYYw&branch=master)](https://www.bitrise.io/app/525c553aef64bd02)
 [![Objective-c](https://img.shields.io/badge/Swift-2.1-orange.svg?style=flat)](https://developer.apple.com/swift/) 
@@ -15,10 +15,15 @@ You can execute script to create framework of static
 ##Usage
 
 - Create Framework
+
  > Enter the project directory.
+ 
  > Find the directory of script.
+ 
  > Edite the build.sh, modify the path of project directory, the path of target directory.
+ 
  > Execute the command "sh build.sh UISDK".
+ 
  > You can find the framework in the directory of target.
 
 - Create GridView
