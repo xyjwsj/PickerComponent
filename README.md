@@ -1,8 +1,8 @@
 # PickerComponent 1.0
-[![Platform](http://img.shields.io/badge/platform-ios-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action) 
+[![Platform](http://img.shields.io/badge/platform-ios-blue.svg?style=flat)](https://developer.apple.com/iphone/index.action)
+[![Language]Objective-c]
 [![Build Status](https://www.bitrise.io/app/525c553aef64bd02.svg?token=BasjApmM7Nb3N5gSzhjYYw&branch=master)](https://www.bitrise.io/app/525c553aef64bd02)
-[![codebeat badge](https://codebeat.co/badges/74638e53-fc92-4a28-bf68-2f7f883e011d)](https://codebeat.co/projects/github-com-nzswift-gymworkoutmanager) [![Issues](https://img.shields.io/github/issues/NZSwift/GymWorkoutManager.svg?style=flat
-)](https://github.com/NZSwift/GymWorkoutManager/issues?state=open) [![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](http://mit-license.org)
+[![License](http://img.shields.io/badge/license-MIT-lightgrey.svg?style=flat)](http://mit-license.org)
 
 ## Introduction
 
