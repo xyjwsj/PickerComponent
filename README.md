@@ -62,3 +62,6 @@ HLImagePickerController *imagePickerVc = [[HLImagePickerController alloc] initWi
     
     [self presentViewController:imagePickerVc animated:YES completion:nil];
 ```
+
+## Version
+> 1.0
