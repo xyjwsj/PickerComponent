@@ -1,6 +1,6 @@
 #! bin/sh
 
-PROJECT_DIR=/Users/hoolai/Documents/macProject/ImagePickerComponent
+PROJECT_DIR=/Users/hoolai/Documents/macProject/PickerComponent
 BUILD_OUTSDK_DIR=${PROJECT_DIR}/OUTSDK/BUILD_DIR
 BUILD_HEADER_DIR=${PROJECT_DIR}/OUTSDK/HEADER_DIR
 
@@ -92,9 +92,11 @@ create_header() {
 }
 
 copy_header_file() {
-	cp $PROJECT_DIR/"ImagePickerComponent/Classes/ImageSelectorBrowse(图片选择器,展示,删除)/Controller/HLImagePickerController.h" ${BUILD_HEADER_DIR}
-	cp $PROJECT_DIR/"ImagePickerComponent/Classes/Other/Category/"*.h ${BUILD_HEADER_DIR}
-	cp $PROJECT_DIR/"ImagePickerComponent/Classes/Other/HLSharedData.h" ${BUILD_HEADER_DIR}
+	cp $PROJECT_DIR/"PickerComponent/Classes/ImageSelectorBrowse(图片选择器,展示,删除)/Controller/HLImagePickerController.h" ${BUILD_HEADER_DIR}
+	cp $PROJECT_DIR/"PickerComponent/Classes/Other/Category/"*.h ${BUILD_HEADER_DIR}
+	cp $PROJECT_DIR/"PickerComponent/Classes/Other/HLSharedData.h" ${BUILD_HEADER_DIR}
+	cp $PROJECT_DIR/"PickerComponent/Classes/ImageSelectorBrowse(图片选择器,展示,删除)/View/HLGridView.h" ${BUILD_HEADER_DIR}
+	cp $PROJECT_DIR/"PickerComponent/Classes/DateSelector(时间,文本选择器)/Controller/UICommonPickerViewController.h" ${BUILD_HEADER_DIR}
 }
 
 build_target(){

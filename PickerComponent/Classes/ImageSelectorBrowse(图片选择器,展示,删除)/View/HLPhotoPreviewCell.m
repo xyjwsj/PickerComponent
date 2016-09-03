@@ -67,6 +67,11 @@
     }];
 }
 
+- (void)setImage:(UIImage *)image {
+    self.imageView.image = image;
+    [self resizeSubviews];
+}
+
 - (void)recoverSubviews {
     [_scrollView setZoomScale:1.0 animated:NO];
     [self resizeSubviews];

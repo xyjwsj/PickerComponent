@@ -89,6 +89,14 @@
     self.center = center;
 }
 
+- (CGFloat)bottom {
+    return self.y + self.height;
+}
+
+- (CGFloat)right {
+    return self.x + self.width;
+}
+
 + (void)showOscillatoryAnimationWithLayer:(CALayer *)layer type:(TZOscillatoryAnimationType)type{
     NSNumber *animationScale1 = type == HLOscillatoryAnimationToBigger ? @(1.15) : @(0.5);
     NSNumber *animationScale2 = type == HLOscillatoryAnimationToBigger ? @(0.92) : @(1.15);

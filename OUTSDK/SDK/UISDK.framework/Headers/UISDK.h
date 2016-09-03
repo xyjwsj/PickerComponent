@@ -7,8 +7,10 @@
 //
 #ifndef UISDK_h
 #define UISDK_h
+#import "HLGridView.h"
 #import "HLImagePickerController.h"
 #import "HLSharedData.h"
+#import "UICommonPickerViewController.h"
 #import "UIImage+HLServiceBundle.h"
 #import "UIView+HLFrame.h"
 #endif /* UISDK_h */

@@ -77,7 +77,9 @@
     [self.navigationController setNavigationBarHidden:YES];
     if (iOS7Later) [UIApplication sharedApplication].statusBarHidden = YES;
     if (_currentIndex) [_collectionView setContentOffset:CGPointMake((self.view.width + 20) * _currentIndex, 0) animated:NO];
-    [self refreshNaviBarAndBottomBarState];
+    if (_preViewMode != HLPreViewTypeBrowse) {
+        [self refreshNaviBarAndBottomBarState];
+    }
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -322,7 +324,7 @@
     
     NSInteger currentIndex = offSetWidth / (self.view.width + 20);
     
-    if (_currentIndex != currentIndex) {
+    if (_currentIndex != currentIndex && _preViewMode != HLPreViewTypeBrowse) {
         _currentIndex = currentIndex;
         [self refreshNaviBarAndBottomBarState];
     }
@@ -331,12 +333,20 @@
 #pragma mark - UICollectionViewDataSource && Delegate
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return _models.count;
+    if (_models.count > 0) {
+        return _models.count;
+    } else {
+        return _photosTemp.count;
+    }
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
     HLPhotoPreviewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"HLPhotoPreviewCell" forIndexPath:indexPath];
-    cell.model = _models[indexPath.row];
+    if (_models.count > 0) {
+        cell.model = _models[indexPath.row];
+    } else {
+        cell.image = _photosTemp[indexPath.row];
+    }
     
     if (!cell.singleTapGestureBlock) {
         __block BOOL _weakIsHideNaviBar = _isHideNaviBar;

@@ -12,6 +12,7 @@
 @interface HLPhotoPreviewCell : UICollectionViewCell
 
 @property (nonatomic, strong) HLAssetModel *model;
+@property (nonatomic, strong) UIImage *image;
 @property (nonatomic, copy) void (^singleTapGestureBlock)();
 
 - (void)recoverSubviews;

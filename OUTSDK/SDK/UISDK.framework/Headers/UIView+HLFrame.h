@@ -21,6 +21,9 @@
 @property (nonatomic, assign) CGFloat centerX;
 @property (nonatomic, assign) CGFloat centerY;
 
+@property (nonatomic, assign, readonly) CGFloat bottom;
+@property (nonatomic, assign, readonly) CGFloat right;
+
 + (void)showOscillatoryAnimationWithLayer:(CALayer *)layer type:(TZOscillatoryAnimationType)type;
 
 @end

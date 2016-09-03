@@ -11,9 +11,11 @@
 #import "HLImagePickerController.h"
 #import "HLGridView.h"
 #import "HLPhotoPreviewController.h"
+#import "UICommonPickerViewController.h"
 
 @interface ViewController ()<HLImagePickerControllerDelegate>
 @property (nonatomic, retain) HLGridView * gridView;
+@property (nonatomic, retain) UICommonPickerViewController *con;
 @end
 
 @implementation ViewController
@@ -26,13 +28,26 @@
     
     UIButton* button = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
     
-    [button setTitle:@"打开" forState:UIControlStateNormal];
+    [button setTitle:@"图片" forState:UIControlStateNormal];
     [button setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
     [button addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:button];
     
     button.center = self.view.center;
     button.y = 80;
+    button.x = 30;
+
+    UIButton* selectBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 50, 40)];
+    
+    [selectBtn setTitle:@"选择" forState:UIControlStateNormal];
+    [selectBtn setTitleColor:[UIColor greenColor] forState:UIControlStateNormal];
+    [selectBtn addTarget:self action:@selector(selectClick) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:selectBtn];
+    
+    selectBtn.center = self.view.center;
+    selectBtn.y = 80;
+    selectBtn.x = 190;
+
     
     _gridView = [[HLGridView alloc] initWithFrame:CGRectMake(10, button.y + 50, SCREEN_WIDTH - 20, 100) columnNumber:3];
     
@@ -40,7 +55,7 @@
     
     __block typeof(self) weakSelf = self;
     _gridView.singleTapGestureBlock = ^(NSInteger index, NSMutableArray* assets, NSArray<UIImage *> *photos) {
-        HLImagePickerController* imagePickerController = [[HLImagePickerController alloc] initWithSelectedAssets:assets selectedPhotos:[NSMutableArray arrayWithArray:photos] index:index mode:HLPreViewTypeBrowse okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto){
+        HLImagePickerController* imagePickerController = [[HLImagePickerController alloc] initWithSelectedAssets:nil selectedPhotos:[NSMutableArray arrayWithArray:photos] index:index mode:HLPreViewTypeEdite okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto){
             weakSelf.gridView.assets = [NSMutableArray arrayWithArray:assets];
             weakSelf.gridView.photos = [NSMutableArray arrayWithArray:photos];
             
@@ -51,6 +66,18 @@
     [self.view addSubview:_gridView];
     
     
+}
+
+- (void)selectClick {
+    NSMutableDictionary* dicData = [[NSMutableDictionary alloc] initWithCapacity:3];
+    NSMutableArray* arr1 = [[NSMutableArray alloc] initWithObjects:@"一列1",@"一列2",@"一列3",@"一列4",@"一列5", nil];
+    [dicData setObject:arr1 forKey:FIRST];
+    if (!_con) {
+        _con = [[UICommonPickerViewController alloc] initWithType:ARRAY_PICKER data:dicData];
+    }
+    [_con showInController:self pickerCallbakc:^(BOOL result, id data) {
+        NSLog(@"选择了:%@", data);
+    }];
 }
 
 - (void)click {

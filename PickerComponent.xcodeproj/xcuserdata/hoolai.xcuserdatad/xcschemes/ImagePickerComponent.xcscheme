@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6BD066B21D717BB800215F8D"
-               BuildableName = "ImagePickerComponent.app"
-               BlueprintName = "ImagePickerComponent"
-               ReferencedContainer = "container:ImagePickerComponent.xcodeproj">
+               BuildableName = "PickerComponent.app"
+               BlueprintName = "PickerComponent"
+               ReferencedContainer = "container:PickerComponent.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6BD066B21D717BB800215F8D"
-            BuildableName = "ImagePickerComponent.app"
-            BlueprintName = "ImagePickerComponent"
-            ReferencedContainer = "container:ImagePickerComponent.xcodeproj">
+            BuildableName = "PickerComponent.app"
+            BlueprintName = "PickerComponent"
+            ReferencedContainer = "container:PickerComponent.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6BD066B21D717BB800215F8D"
-            BuildableName = "ImagePickerComponent.app"
-            BlueprintName = "ImagePickerComponent"
-            ReferencedContainer = "container:ImagePickerComponent.xcodeproj">
+            BuildableName = "PickerComponent.app"
+            BlueprintName = "PickerComponent"
+            ReferencedContainer = "container:PickerComponent.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6BD066B21D717BB800215F8D"
-            BuildableName = "ImagePickerComponent.app"
-            BlueprintName = "ImagePickerComponent"
-            ReferencedContainer = "container:ImagePickerComponent.xcodeproj">
+            BuildableName = "PickerComponent.app"
+            BlueprintName = "PickerComponent"
+            ReferencedContainer = "container:PickerComponent.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

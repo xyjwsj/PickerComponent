@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:ImagePickerComponent.xcodeproj">
+      location = "self:/Users/hoolai/Documents/macProject/ImagePickerComponent/PickerComponent.xcodeproj">
    </FileRef>
 </Workspace>
