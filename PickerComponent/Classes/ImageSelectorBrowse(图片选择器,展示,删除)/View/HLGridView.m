@@ -31,11 +31,38 @@
     if (self = [super initWithFrame:frame]) {
         _margin = 5;
 //        self.userInteractionEnabled = YES;
+        _picType = LOCAL_IMAGE;
     }
     return self;
 }
 
-- (void)setPhotos:(NSMutableArray<UIImage *> *)photos {
+- (void)setPhotos:(NSMutableArray *)photos cacheImageDelegate:(void(^)(UIImageView * imageView, NSString* url))cacheImageDelegate {
+    [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    _photos = photos;
+    NSInteger count = photos.count;
+    NSInteger row = (count + _columnNumber - 1) / _columnNumber;
+    CGFloat width = (self.width - (_columnNumber + 1) * _margin) / _columnNumber;
+    CGFloat height = width;
+    
+    for (int i = 0; i < photos.count; i++) {
+        NSInteger currentRow = i / _columnNumber;
+        NSInteger currentColumn = i % _columnNumber;
+        CGFloat x = _margin + (width + _margin) * currentColumn;
+        CGFloat y = _margin + (height + _margin) * currentRow;
+        UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, width, height)];
+        cacheImageDelegate(imageView, photos[i]);
+        imageView.userInteractionEnabled = YES;
+        imageView.tag = i;
+        UITapGestureRecognizer* gesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imagesingleTap:)];
+        [imageView addGestureRecognizer:gesture];
+        [self addSubview:imageView];
+    }
+    NSLog(@"%@", NSStringFromCGRect(self.frame));
+    self.height = _margin + (_margin + height) * row;
+    NSLog(@"%@", NSStringFromCGRect(self.frame));
+}
+
+- (void)setPhotos:(NSMutableArray *)photos {
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     _photos = photos;
     NSInteger count = photos.count;

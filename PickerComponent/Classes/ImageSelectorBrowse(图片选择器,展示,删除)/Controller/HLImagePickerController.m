@@ -177,6 +177,36 @@
     return self;
 }
 
+- (instancetype)initWithSelectedAssets:(NSMutableArray *)selectedAssets selectedPhotos:(NSMutableArray *)selectedPhotos index:(NSInteger)index mode:(HLPreViewType)mode okCallback:(void (^)(NSArray<UIImage *> *, NSArray *, BOOL))callback syncLoadImage:(void(^)(NSString* url, void(^imageLoadCallback)(UIImage* image)))syncLoadImage {
+    HLPhotoPreviewController *previewVc = [[HLPhotoPreviewController alloc] init];
+    self = [super initWithRootViewController:previewVc];
+    if (self) {
+        self.selectedAssets = [NSMutableArray arrayWithArray:selectedAssets];
+        self.allowPickingOriginalPhoto = self.allowPickingOriginalPhoto;
+        self.timeout = 15;
+        self.photoWidth = 828.0;
+        self.maxImagesCount = selectedAssets.count;
+        self.photoPreviewMaxWidth = 600;
+        self.barItemTextFont = [UIFont systemFontOfSize:15];
+        self.barItemTextColor = [UIColor whiteColor];
+        [self configDefaultImageName];
+        
+        previewVc.photos = [NSMutableArray arrayWithArray:selectedPhotos];
+        previewVc.currentIndex = index;
+        previewVc.preViewMode = mode;
+        previewVc.syncLoadImage = syncLoadImage;
+        __weak typeof(self) weakSelf = self;
+        
+        [previewVc setOkButtonClickBlockWithPreviewType:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto) {
+            if (callback) {
+                callback(photos,assets,isSelectOriginalPhoto);
+            }
+            [weakSelf dismissViewControllerAnimated:YES completion:nil];
+        }];
+    }
+    return self;
+}
+
 - (void)observeAuthrizationStatusChange {
     if ([[HLImageManager manager] authorizationStatusAuthorized]) {
         [self pushToPhotoPickerVc];
