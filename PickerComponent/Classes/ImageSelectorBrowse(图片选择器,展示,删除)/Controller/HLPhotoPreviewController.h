@@ -22,4 +22,6 @@
 @property (nonatomic, copy) void (^okButtonClickBlock)(BOOL isSelectOriginalPhoto);
 @property (nonatomic, copy) void (^okButtonClickBlockWithPreviewType)(NSArray<UIImage *> *photos,NSArray *assets,BOOL isSelectOriginalPhoto);
 
+@property (nonatomic, copy) void (^syncLoadImage)(NSString* url, void(^imageLoadCallback)(UIImage* image));
+
 @end

@@ -345,7 +345,16 @@
     if (_models.count > 0) {
         cell.model = _models[indexPath.row];
     } else {
-        cell.image = _photosTemp[indexPath.row];
+        if ([_photosTemp[indexPath.row] isKindOfClass:[NSString class]]) {
+            __block typeof(cell) weakCell = cell;
+            weakCell.image = [[UIImage alloc] init];
+            _syncLoadImage(_photosTemp[indexPath.row], ^(UIImage* image){
+                weakCell.image = image;
+            });
+        }
+        if ([_photosTemp[indexPath.row] isKindOfClass:[UIImage class]]) {
+            cell.image = _photosTemp[indexPath.row];
+        }
     }
     
     if (!cell.singleTapGestureBlock) {
