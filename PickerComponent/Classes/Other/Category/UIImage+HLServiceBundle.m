@@ -48,4 +48,13 @@
     return [normal resizableImageWithCapInsets:UIEdgeInsetsMake(top, left, bottom, right) resizingMode:UIImageResizingModeStretch];
 }
 
++ (UIImage *)resizableImage:(NSString *)name edgeInsetsRate:(UIEdgeInsets)edgeInsetsRate {
+    UIImage *normal = [UIImage imageNamedFromServiceBundle:name];
+    CGFloat top = normal.size.height * edgeInsetsRate.top;
+    CGFloat left = normal.size.width * edgeInsetsRate.left;
+    CGFloat bottom = normal.size.height * edgeInsetsRate.bottom;
+    CGFloat right = normal.size.width * edgeInsetsRate.right;
+    return [normal resizableImageWithCapInsets:UIEdgeInsetsMake(top, left, bottom, right) resizingMode:UIImageResizingModeStretch];
+}
+
 @end

@@ -21,4 +21,6 @@
  */
 + (UIImage *)resizableImage:(NSString *)name;
 
++ (UIImage *)resizableImage:(NSString *)name edgeInsetsRate:(UIEdgeInsets)edgeInsetsRate;
+
 @end

@@ -33,6 +33,18 @@ typedef enum :NSInteger {
 - (instancetype)initWithFrame:(CGRect)frame columnNumber:(NSInteger)column;
 
 /**
+ *  此方法会对高度进行自动适配
+ *
+ *
+ *  @param frame  view大小位置，宽度必须配置
+ *  @param column 显示列数
+ *  @param photosCount 图片数量
+ *
+ *  @return 当前view
+ */
+- (instancetype)initWithFrame:(CGRect)frame columnNumber:(NSInteger)column photosCount:(NSInteger)photosCount;
+
+/**
  *  加载网络图片
  *
  *  @param photos             图片数组，字符串

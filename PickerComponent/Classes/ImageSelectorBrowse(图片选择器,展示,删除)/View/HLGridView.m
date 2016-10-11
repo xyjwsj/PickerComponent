@@ -36,6 +36,24 @@
     return self;
 }
 
+- (instancetype)initWithFrame:(CGRect)frame columnNumber:(NSInteger)column photosCount:(NSInteger)photosCount {
+    _columnNumber = column;
+    _margin = 5;
+    _picType = LOCAL_IMAGE;
+    if (self = [super initWithFrame:frame]) {
+        NSInteger row = (photosCount + _columnNumber - 1) / _columnNumber;
+        CGFloat width = (self.width - (_columnNumber + 1) * _margin) / _columnNumber;
+        CGFloat height = width;
+        
+        if (photosCount < _columnNumber) {
+            frame.size.width = 2 * _margin + (width + _margin) * (photosCount - 1);
+        }
+        //        self.userInteractionEnabled = YES;
+        frame.size.height = _margin + (_margin + height) * row;
+    }
+    return self;
+}
+
 - (void)setPhotos:(NSMutableArray *)photos cacheImageDelegate:(void(^)(UIImageView * imageView, NSString* url))cacheImageDelegate {
     [self.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     _photos = photos;
@@ -43,6 +61,11 @@
     NSInteger row = (count + _columnNumber - 1) / _columnNumber;
     CGFloat width = (self.width - (_columnNumber + 1) * _margin) / _columnNumber;
     CGFloat height = width;
+
+    if (photos.count < _columnNumber) {
+        self.width = _margin + (width + _margin) * photos.count;
+    }
+    self.height = _margin + (_margin + height) * row;
     
     for (int i = 0; i < photos.count; i++) {
         NSInteger currentRow = i / _columnNumber;
@@ -50,6 +73,8 @@
         CGFloat x = _margin + (width + _margin) * currentColumn;
         CGFloat y = _margin + (height + _margin) * currentRow;
         UIImageView * imageView = [[UIImageView alloc] initWithFrame:CGRectMake(x, y, width, height)];
+        [imageView setContentMode:UIViewContentModeScaleAspectFill];
+        imageView.clipsToBounds = YES;
         cacheImageDelegate(imageView, photos[i]);
         imageView.userInteractionEnabled = YES;
         imageView.tag = i;
@@ -57,9 +82,6 @@
         [imageView addGestureRecognizer:gesture];
         [self addSubview:imageView];
     }
-    NSLog(@"%@", NSStringFromCGRect(self.frame));
-    self.height = _margin + (_margin + height) * row;
-    NSLog(@"%@", NSStringFromCGRect(self.frame));
 }
 
 - (void)setPhotos:(NSMutableArray *)photos {
