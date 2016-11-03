@@ -13,6 +13,11 @@
 @property (nonatomic, assign) CGSize assetGridThumbnailSize;
 @property (nonatomic, assign) CGFloat HLScreenScale;
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+@property (nonatomic, strong) ALAssetsLibrary *assetLibrary;
+#pragma clang diagnostic pop
+
 @end
 
 @implementation HLImageManager
@@ -30,6 +35,14 @@
         
     });
     return instance;
+}
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+- (ALAssetsLibrary *)assetLibrary {
+    if (_assetLibrary == nil) _assetLibrary = [[ALAssetsLibrary alloc] init];
+#pragma clang diagnostic pop
+    return _assetLibrary;
 }
 
 - (instancetype)init {
@@ -64,75 +77,118 @@
 
 - (void)cameraRollAlbum:(void (^)(HLAlbumModel *model))completion {
     
-    HLAlbumModel *model;
-    PHFetchOptions *option = [[PHFetchOptions alloc] init];
-//    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    // 获得所有的自定义相簿
-    PHFetchResult<PHAssetCollection *> *assetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
-    
-    //遍历相册
-    for (PHAssetCollection* collection in assetCollections) {
+    __block HLAlbumModel *model;
+    if (iOS8Later) {
+        PHFetchOptions *option = [[PHFetchOptions alloc] init];
+    //    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+        // 获得所有的自定义相簿
+        PHFetchResult<PHAssetCollection *> *assetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
         
-        if ([self checkAvisibleAlbum:collection.localizedTitle]) {
-            PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+        //遍历相册
+        for (PHAssetCollection* collection in assetCollections) {
             
-            //self为单例，忽略 __block
-            model = [self albumModelResult:fetchResult name:collection.localizedTitle];
-            if (completion) {
-                completion(model);
+            if ([self checkAvisibleAlbum:collection.localizedTitle]) {
+                PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+                
+                //self为单例，忽略 __block
+                model = [self albumModelResult:fetchResult name:collection.localizedTitle];
+                if (completion) {
+                    completion(model);
+                }
             }
         }
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+            if ([group numberOfAssets] < 1) return;
+            NSString *name = [group valueForProperty:ALAssetsGroupPropertyName];
+#pragma clang diagnostic pop
+            if ([self isCameraRollAlbum:name]) {
+                model = [self albumModelResult:group name:name];
+                if (completion) {
+                    completion(model);
+                }
+                *stop = YES;
+            }
+        } failureBlock:nil];
     }
 }
 
 - (void)allAlbums:(void (^)(NSArray<HLAlbumModel *>*models))completion {
     NSMutableArray* modelArray = [NSMutableArray array];
     HLAlbumModel *model;
-    PHFetchOptions *option = [[PHFetchOptions alloc] init];
-//    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
-    // 系统智能相册
-    PHFetchResult<PHAssetCollection *> *systemAssetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
-    
-    //遍历相册
-    for (PHAssetCollection* collection in systemAssetCollections) {
+    if (iOS8Later) {
+        PHFetchOptions *option = [[PHFetchOptions alloc] init];
+    //    option.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:YES]];
+        // 系统智能相册
+        PHFetchResult<PHAssetCollection *> *systemAssetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeSmartAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
+        
+        //遍历相册
+        for (PHAssetCollection* collection in systemAssetCollections) {
 
-        PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
-        if (fetchResult.count == 0) {
-            continue;
+            PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+            if (fetchResult.count == 0) {
+                continue;
+            }
+            if ([collection.localizedTitle containsString:@"Deleted"] || [collection.localizedTitle isEqualToString:@"最近删除"]) {
+                continue;
+            }
+            if ([collection.localizedTitle containsString:@"Videos"] || [collection.localizedTitle isEqualToString:@"视频"]) {
+                continue;
+            }
+            if ([self checkAvisibleAlbum:collection.localizedTitle]) {
+                //self为单例，忽略 __block
+                model = [self albumModelResult:fetchResult name:collection.localizedTitle];
+                [modelArray insertObject:model atIndex:0];
+            } else {
+                model = [self albumModelResult:fetchResult name:collection.localizedTitle];
+                [modelArray addObject:model];
+            }
         }
-        if ([collection.localizedTitle containsString:@"Deleted"] || [collection.localizedTitle isEqualToString:@"最近删除"]) {
-            continue;
-        }
-        if ([collection.localizedTitle containsString:@"Videos"] || [collection.localizedTitle isEqualToString:@"视频"]) {
-            continue;
-        }
-        if ([self checkAvisibleAlbum:collection.localizedTitle]) {
-            //self为单例，忽略 __block
-            model = [self albumModelResult:fetchResult name:collection.localizedTitle];
-            [modelArray insertObject:model atIndex:0];
-        } else {
+        
+        PHFetchResult<PHAssetCollection *> *userAssetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
+        
+        //遍历相册
+        for (PHAssetCollection* collection in userAssetCollections) {
+            PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
+            
+            if (fetchResult.count == 0) {
+                continue;
+            }
             model = [self albumModelResult:fetchResult name:collection.localizedTitle];
             [modelArray addObject:model];
         }
-    }
-    
-    PHFetchResult<PHAssetCollection *> *userAssetCollections = [PHAssetCollection fetchAssetCollectionsWithType:PHAssetCollectionTypeAlbum subtype:PHAssetCollectionSubtypeAlbumRegular options:option];
-    
-    //遍历相册
-    for (PHAssetCollection* collection in userAssetCollections) {
-        PHFetchResult* fetchResult = [PHAsset fetchAssetsInAssetCollection:collection options:nil];
-        
-        if (fetchResult.count == 0) {
-            continue;
-        }
-        model = [self albumModelResult:fetchResult name:collection.localizedTitle];
-        [modelArray addObject:model];
-    }
 
-    if (completion) {
-        completion(modelArray);
+        if (completion) {
+            completion(modelArray);
+        }
+    } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        [self.assetLibrary enumerateGroupsWithTypes:ALAssetsGroupAll usingBlock:^(ALAssetsGroup *group, BOOL *stop) {
+#pragma clang diagnostic pop
+            if (group == nil) {
+                if (completion && modelArray.count > 0) completion(modelArray);
+            }
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            if ([group numberOfAssets] < 1) return;
+            NSString *name = [group valueForProperty:ALAssetsGroupPropertyName];
+#pragma clang diagnostic pop
+            if ([self isCameraRollAlbum:name]) {
+                [modelArray insertObject:[self albumModelResult:group name:name] atIndex:0];
+            } else if ([name isEqualToString:@"My Photo Stream"] || [name isEqualToString:@"我的照片流"]) {
+                if (modelArray.count) {
+                    [modelArray insertObject:[self albumModelResult:group name:name] atIndex:1];
+                } else {
+                    [modelArray addObject:[self albumModelResult:group name:name]];
+                }
+            } else {
+                [modelArray addObject:[self albumModelResult:group name:name]];
+            }
+        } failureBlock:nil];
     }
-    
 }
 
 - (void)assetsFromFetchResult:(id)result completion:(void (^)(NSArray<HLAssetModel *> *))completion {
@@ -157,8 +213,34 @@
             completion(assets);
         }
         
+    } else if ([result isKindOfClass:[ALAssetsGroup class]]) {
+        ALAssetsGroup *group = (ALAssetsGroup *)result;
+        [group setAssetsFilter:[ALAssetsFilter allPhotos]];
+        ALAssetsGroupEnumerationResultsBlock resultBlock = ^(ALAsset *result, NSUInteger index, BOOL *stop)  {
+#pragma clang diagnostic pop
+            if (result == nil) {
+                if (completion) completion(assets);
+            }
+            HLAssetModelMediaType type = HLAssetModelMediaTypePhoto;
+            /// Allow picking video
+            [assets addObject:[HLAssetModel modelWithAsset:result type:type]];
+        };
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+        if (self.sortAscendingByModificationDate) {
+            [group enumerateAssetsUsingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+                if (resultBlock) { resultBlock(result,index,stop); }
+#pragma clang diagnostic pop
+            }];
+        } else {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+            [group enumerateAssetsWithOptions:NSEnumerationReverse usingBlock:^(ALAsset *result, NSUInteger index, BOOL *stop) {
+#pragma clang diagnostic pop
+                if (resultBlock) { resultBlock(result,index,stop); }
+            }];
+        }
     }
-    
 }
 
 /// Get postImage / 获取封面图
@@ -243,6 +325,22 @@
         }
         return [selectedAssetUrls containsObject:[asset valueForProperty:ALAssetPropertyURLs]];
 #pragma clang diagnostic pop
+    }
+}
+
+- (BOOL)isCameraRollAlbum:(NSString *)albumName {
+    NSString *versionStr = [[UIDevice currentDevice].systemVersion stringByReplacingOccurrencesOfString:@"." withString:@""];
+    if (versionStr.length <= 1) {
+        versionStr = [versionStr stringByAppendingString:@"00"];
+    } else if (versionStr.length <= 2) {
+        versionStr = [versionStr stringByAppendingString:@"0"];
+    }
+    CGFloat version = versionStr.floatValue;
+    // 目前已知8.0.0 - 8.0.2系统，拍照后的图片会保存在最近添加中
+    if (version >= 800 && version <= 802) {
+        return [albumName isEqualToString:@"最近添加"] || [albumName isEqualToString:@"Recently Added"];
+    } else {
+        return [albumName isEqualToString:@"Camera Roll"] || [albumName isEqualToString:@"相机胶卷"] || [albumName isEqualToString:@"所有照片"] || [albumName isEqualToString:@"All Photos"];
     }
 }
 

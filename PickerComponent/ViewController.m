@@ -55,7 +55,7 @@
     
     __block typeof(self) weakSelf = self;
     _gridView.singleTapGestureBlock = ^(NSInteger index, NSMutableArray* assets, NSArray<UIImage *> *photos) {
-        HLImagePickerController* imagePickerController = [[HLImagePickerController alloc] initWithSelectedAssets:nil selectedPhotos:[NSMutableArray arrayWithArray:photos] index:index mode:HLPreViewTypeEdite okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto){
+        HLImagePickerController* imagePickerController = [[HLImagePickerController alloc] initWithSelectedAssets:assets selectedPhotos:[NSMutableArray arrayWithArray:photos] index:index mode:HLPreViewTypeEdite okCallback:^(NSArray<UIImage *> *photos, NSArray *assets, BOOL isSelectOriginalPhoto){
             weakSelf.gridView.assets = [NSMutableArray arrayWithArray:assets];
             weakSelf.gridView.photos = [NSMutableArray arrayWithArray:photos];
             
